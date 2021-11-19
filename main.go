@@ -22,8 +22,9 @@ func initDB() {
 
 func initServer() {
 	for _, path := range core.UrlPatterns {
-		http.HandleFunc(path.Url, func(w http.ResponseWriter, req *http.Request) {
-			io.WriteString(w, path.View(req))
+		_path := path // 'path' gets overriden and closure remembers only the pointer. So store the value before it gets changed in the next loop
+		http.HandleFunc(_path.Url, func(w http.ResponseWriter, req *http.Request) {
+			io.WriteString(w, _path.View(req))
 		})
 	}
 
