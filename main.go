@@ -1,24 +1,14 @@
 package main
 
 import (
-	core "gongo/core"
+	"gongo/core"
+	"gongo/db"
 	"io"
 	"strconv"
 
 	"log"
 	"net/http"
-
-	sqlite "gorm.io/driver/sqlite"
-	"gorm.io/gorm"
 )
-
-func initDB() {
-	db, err := gorm.Open(sqlite.Open("sqlite3.db"), &gorm.Config{})
-	if err != nil {
-		panic("failed to connect database")
-	}
-	db.AutoMigrate(&core.User{})
-}
 
 func initServer() {
 	for _, path := range core.UrlPatterns {
@@ -31,6 +21,11 @@ func initServer() {
 	var port = ":" + strconv.Itoa(core.Port)
 	log.Println("Listing for requests at http://localhost" + port + "/hello")
 	log.Fatal(http.ListenAndServe(port, nil))
+}
+
+func initDB() {
+	db.Setup()
+	db.Conn.AutoMigrate(&core.User{})
 }
 
 func main() {
