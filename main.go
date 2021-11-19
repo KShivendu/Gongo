@@ -14,7 +14,10 @@ func initServer() {
 	for _, path := range core.UrlPatterns {
 		_path := path // 'path' gets overriden and closure remembers only the pointer. So store the value before it gets changed in the next loop
 		http.HandleFunc(_path.Url, func(w http.ResponseWriter, req *http.Request) {
-			io.WriteString(w, _path.View(req))
+			w.Header().Set("Content-Type", "application/json")
+			io.WriteString(w, _path.View(
+				&core.Request{Req: req, Args: core.KWA{}},
+			))
 		})
 	}
 
