@@ -8,3 +8,13 @@ Web framework like Django written in Golang
     ```sh
     go run main.go
     ```
+
+## Roadmap
+
+- [] Auto-discover models related to apps specified by settings.InstalledApps
+- [] CLI to generate starter template
+
+
+## Reference:
+- https://gist.github.com/iamphill/9dfafc668a3c1cd79bcd
+- https://github.com/gofiber/fiber

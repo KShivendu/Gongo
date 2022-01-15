@@ -3,8 +3,18 @@ package core
 import (
 	"encoding/json"
 	"gongo/db"
+	"net/http"
 	"strconv"
 )
+
+func HomePage(req *Request) string {
+	if req.URL.Path != "/" {
+		http.NotFound(*req.Writer, &req.Request)
+		return ""
+	}
+
+	return "Welcome to Gongo!"
+}
 
 func AddUser(req *Request) string {
 	user := User{
@@ -23,7 +33,7 @@ func ListUsers(req *Request) string {
 }
 
 func RemoveUser(req *Request) string {
-	var Id, err = strconv.Atoi(req.Req.URL.Query()["Id"][0])
+	var Id, err = strconv.Atoi(req.URL.Query()["Id"][0])
 	if err != nil {
 		return "Provide User Id"
 	}
@@ -32,8 +42,8 @@ func RemoveUser(req *Request) string {
 }
 
 func UpdateUser(req *Request) string {
-	var Name = req.Req.URL.Query()["Name"][0]
-	var Id, err = strconv.Atoi(req.Req.URL.Query()["Id"][0])
+	var Name = req.URL.Query()["Name"][0]
+	var Id, err = strconv.Atoi(req.URL.Query()["Id"][0])
 	if err != nil {
 		return "Provide new user name"
 	}

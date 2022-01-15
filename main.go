@@ -16,7 +16,7 @@ func initServer() {
 		http.HandleFunc(_path.Url, func(w http.ResponseWriter, req *http.Request) {
 			w.Header().Set("Content-Type", "application/json")
 			io.WriteString(w, _path.View(
-				&core.Request{Req: req, Args: core.KWA{}},
+				&core.Request{Request: *req, Writer: &w, Args: core.KWA{}},
 			))
 		})
 	}

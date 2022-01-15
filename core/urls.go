@@ -6,8 +6,9 @@ import (
 
 type KWA map[string]interface{}
 type Request struct {
-	Req  *http.Request
-	Args KWA
+	http.Request
+	Writer *http.ResponseWriter
+	Args   KWA
 }
 
 type View func(req *Request) string
@@ -22,6 +23,11 @@ var UrlPatterns = []Path{
 	{Url: "/listUsers", View: ListUsers},   // R
 	{Url: "/updateUser", View: UpdateUser}, // U
 	{Url: "/removeUser", View: RemoveUser}, // R
-	{Url: "/hello", View: Hello},
-	{Url: "/bye", View: Bye},
+
+	{Url: "/admin/login", View: AdminLogin}, // AdminLogin
+	{Url: "/admin", View: AdminHome},        // AdminHome
+
+	{Url: "/hello", View: Hello}, // Dummy
+	{Url: "/bye", View: Bye},     // Dummy
+	{Url: "/", View: HomePage},   // Landing Page
 }
