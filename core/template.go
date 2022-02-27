@@ -20,7 +20,7 @@ func generateCsrf() string {
 	return "CSRF"
 }
 
-func (template *Template) render(context interface{}, req *Request) string {
+func (template *Template) render(context interface{}) Response {
 	// Add CSRF token to the interface
 	// data map[string]interface{}
 
@@ -38,7 +38,5 @@ func (template *Template) render(context interface{}, req *Request) string {
 	t.Execute(&buffer, rctx)
 
 	// Set content type as text/html and return the rendered html
-	(*req.Writer).Header().Set("Content-Type", "text/html")
-	return buffer.String()
-
+	return HttpResponse(buffer.String())
 }

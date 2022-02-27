@@ -10,7 +10,7 @@ type TodoList struct {
 	List []TodoItem
 }
 
-func AdminHome(req *Request) string {
+func AdminHome(req *Request) Response {
 	s := &TodoList{
 		User: "KShivendu",
 		List: []TodoItem{
@@ -21,11 +21,11 @@ func AdminHome(req *Request) string {
 
 	template := &Template{filepath: "index.html"}
 
-	return template.render(s, req)
+	return template.render(s)
 }
 
-func AdminLogin(req *Request) string {
+func AdminLogin(req *Request) Response {
 	template := &Template{filepath: "admin/login.html"}
 
-	return template.render(nil, req)
+	return template.render(nil)
 }

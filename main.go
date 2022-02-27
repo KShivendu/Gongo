@@ -3,7 +3,6 @@ package main
 import (
 	"gongo/core"
 	"gongo/db"
-	"io"
 	"strconv"
 
 	"log"
@@ -14,10 +13,10 @@ func initServer() {
 	for _, path := range core.UrlPatterns {
 		_path := path // 'path' gets overriden and closure remembers only the pointer. So store the value before it gets changed in the next loop
 		http.HandleFunc(_path.Url, func(w http.ResponseWriter, req *http.Request) {
-			w.Header().Set("Content-Type", "application/json")
-			io.WriteString(w, _path.View(
+			response := _path.View(
 				&core.Request{Request: *req, Writer: &w, Args: core.KWA{}},
-			))
+			)
+			response.Write(w)
 		})
 	}
 

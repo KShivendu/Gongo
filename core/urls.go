@@ -11,7 +11,7 @@ type Request struct {
 	Args   KWA
 }
 
-type View func(req *Request) string
+type View func(req *Request) Response
 
 type Path struct {
 	Url  string

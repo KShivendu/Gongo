@@ -1,60 +1,59 @@
 package core
 
 import (
-	"encoding/json"
 	"gongo/db"
 	"net/http"
 	"strconv"
 )
 
-func HomePage(req *Request) string {
+func HomePage(req *Request) Response {
 	if req.URL.Path != "/" {
 		http.NotFound(*req.Writer, &req.Request)
-		return ""
+		return HttpResponse("")
 	}
 
-	return "Welcome to Gongo!"
+	return HttpResponse("Welcome to Gongo!")
 }
 
-func AddUser(req *Request) string {
+func AddUser(req *Request) Response {
 	user := User{
 		Name: "Shivendu", Email: "shivendu@foobar.com", Password: "XXXX##XXXX",
 	}
 	db.Conn.Create(&user)
-	return "Created user " + user.Name
+	return HttpResponse("Created user " + user.Name)
 }
 
-func ListUsers(req *Request) string {
+func ListUsers(req *Request) Response {
 	var users []User
 	db.Conn.Find(&users)
 
-	response, _ := json.Marshal(users)
-	return string(response)
+	return JsonResponse(users)
 }
 
-func RemoveUser(req *Request) string {
+func RemoveUser(req *Request) Response {
 	var Id, err = strconv.Atoi(req.URL.Query()["Id"][0])
 	if err != nil {
-		return "Provide User Id"
+		return HttpResponse("Provide User Id")
 	}
 	db.Conn.Delete(&User{}, Id)
-	return "Deleted successfully"
+
+	return HttpResponse("Deleted successfully")
 }
 
-func UpdateUser(req *Request) string {
+func UpdateUser(req *Request) Response {
 	var Name = req.URL.Query()["Name"][0]
 	var Id, err = strconv.Atoi(req.URL.Query()["Id"][0])
 	if err != nil {
-		return "Provide new user name"
+		return HttpResponse("Provide new user name")
 	}
 	db.Conn.Model(&User{}).Where("Id = ?", Id).Update("Name", Name)
-	return "User name updated successfully"
+	return HttpResponse("User name updated successfully")
 }
 
-func Hello(req *Request) string {
-	return "Hello world"
+func Hello(req *Request) Response {
+	return HttpResponse("Hello world")
 }
 
-func Bye(req *Request) string {
-	return "Bye world"
+func Bye(req *Request) Response {
+	return HttpResponse("Bye world")
 }
