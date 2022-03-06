@@ -12,12 +12,17 @@ import (
 func initServer() {
 	for _, path := range core.UrlPatterns {
 		_path := path // 'path' gets overriden and closure remembers only the pointer. So store the value before it gets changed in the next loop
-		http.HandleFunc(_path.Url, func(w http.ResponseWriter, req *http.Request) {
-			response := _path.View(
+		handleFunction := func(w http.ResponseWriter, req *http.Request) {
+			var view = _path.View
+			if req.URL.Path != _path.Url {
+				view = core.HttpNotFoundHandler
+			}
+			response := view(
 				&core.Request{Request: *req, Writer: &w, Args: core.KWA{}},
 			)
 			response.Write(w)
-		})
+		}
+		http.HandleFunc(_path.Url, handleFunction)
 	}
 
 	var port = ":" + strconv.Itoa(core.Port)

@@ -57,3 +57,14 @@ func Hello(req *Request) Response {
 func Bye(req *Request) Response {
 	return HttpResponse("Bye world")
 }
+
+func HttpNotFoundHandler(req *Request) Response {
+	template := &Template{filepath: "404.html"}
+	var context = map[string]interface{}{
+		"RequestURL": "http://127.0.0.1:8000/",
+		"PossibleUrlPatterns": []interface{}{
+			"Boom/", "admin/",
+		},
+	}
+	return template.render(context)
+}
