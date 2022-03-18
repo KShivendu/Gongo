@@ -30,6 +30,7 @@ func (template *Template) render(context interface{}) Response {
 	// Read the template
 	var buffer bytes.Buffer
 	// TODO: Don't allow files outside templates directory
+	// TODO: Add relative path of gongo instead of putting './'
 	dat, err := os.ReadFile("./templates/" + template.filepath)
 	check(err)
 
