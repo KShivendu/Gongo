@@ -3,12 +3,11 @@ package main
 import (
 	"gongo/core"
 	"gongo/db"
-	"strconv"
+	"gongo/example/todo-crud/app"
 
 	"log"
 	"net/http"
-
-	"gongo/example/todo-crud/app"
+	"strconv"
 )
 
 func initServer() {
@@ -28,12 +27,13 @@ func initServer() {
 	}
 
 	var port = ":" + strconv.Itoa(core.Port)
-	log.Println("Listing for requests at http://localhost" + port + "/hello")
+	log.Println("Listing for requests at http://localhost" + port)
 	log.Fatal(http.ListenAndServe(port, nil))
 }
 
 func initDB() {
-	db.Setup()
+	// db.Setup(db.Database{Alias: "default", Engine: "sqlite3", Name: "BASE_DIR" + "cool.sqlite3"})
+	db.Setup(db.Database{Alias: "psql", Engine: "postgres", Host: "localhost", Port: 5432, Name: "gongo", Username: "postgres", Password: "something"})
 	db.Conn.AutoMigrate(&core.User{})
 }
 
