@@ -3,13 +3,13 @@ package app
 import (
 	"gongo/core"
 	"gongo/db"
+
 	"strconv"
 )
 
 func HomePage(req *core.Request) core.Response {
 	return core.HttpResponse("Welcome to Gongo!")
 }
-
 
 func AddUser(req *core.Request) core.Response {
 	user := User{
@@ -53,4 +53,3 @@ func Hello(req *core.Request) core.Response {
 func Bye(req *core.Request) core.Response {
 	return core.HttpResponse("Bye world")
 }
-

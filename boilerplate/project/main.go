@@ -3,20 +3,22 @@ package main
 import (
 	"gongo/core"
 	"gongo/db"
+	"gongo/example/todo-crud/app"
+	"strings"
 
 	"log"
 	"net/http"
 	"strconv"
-
-	"gongo/boilerplate/project/app"
 )
 
 func initServer() {
+	http.Handle(app.StaticUrl, http.StripPrefix(app.StaticUrl, http.FileServer(http.Dir(app.StaticDir))))
+
 	for _, path := range app.UrlPatterns {
 		_path := path // 'path' gets overriden and closure remembers only the pointer. So store the value before it gets changed in the next loop
 		handleFunction := func(w http.ResponseWriter, req *http.Request) {
 			var view = _path.View
-			if req.URL.Path != _path.Url {
+			if !strings.HasPrefix(req.URL.Path, app.StaticUrl) && req.URL.Path != _path.Url {
 				view = core.HttpNotFoundHandler
 			}
 			response := view(
